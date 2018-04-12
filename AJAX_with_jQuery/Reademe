@@ -1,0 +1,8 @@
+I created a web Weather app in order to present to the end user the current local weather.
+I have 3 files.
+main.css , main.html , main.js
+main.css: contains all the styling of the UI
+main.html:has the DOM and the structure of the App ,script integrated inside the HTML
+main.jS: has the whole javascript,jQuery code which i used to call the JSONS and geolocations.
+
+Enjoy!
