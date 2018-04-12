@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+
+<html style="font-family:Helvetica;">
+<div style="font-family:Helvetica;" id="title" class="text-center">
+    <link href="main.css" rel="stylesheet" type="text/css">
+
+
+    <h1 >minimal<br>Local Weather App</h1>
+    <img id="image" src="" >
+</div>
+<div id="weather">
+    <h4 id="icon"></h4>
+    <button class="button button2" id="temp"></button>
+    <h4 id="hum"></h4>
+    <h4 id="wind"></h4>
+    <h4 id="country"></h4>
+    <!--     <button class="btn btn-block"> C -> F </button> -->
+</div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"> // στο Src έχω βάλει το URL απο την βιβλιοθήκη της jQuery
+    jQuery(function(){
+        //code here
+        var lat;
+        var lon;
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function (position) {
+                lat = position.coords.latitude;
+                lon = position.coords.longitude;
+                var url = "https://fcc-weather-api.glitch.me/api/current?lon=" + lon + "&lat=" + lat;
+                console.log(url);
+                $.getJSON(url, function (data) {
+                    var weather= data.weather[0].icon;
+                    var celcius= Math.floor(data.main.temp);
+                    var humidity=data.main.humidity;
+                    var wind=data.wind.speed;
+                    var country=data.sys.country;
+                    //var Fare=celcius × 9/5 + 32;
+                    var tempswap=false;
+                    var FareTemp=celcius*9/5+32;
+
+
+                    $("#icon").css("background-image","url("+weather+")");
+                    $("#temp").html("Current Temp : "+celcius +" C");
+                    $("#hum").html("Max Humidity : "+ humidity +" %");
+                    $("#wind").html("Wind Speed : " + wind    +" mph");
+                    $("#country").html(" Country : "+country);
+
+                    $("#temp").click(function(){
+                        if(tempswap===false){
+                            $("#temp").html("Current Temp : "+(FareTemp) +" F");
+                            tempswap=true;
+                        }else{
+                            $("#temp").html("Current Temp : "+(celcius) +" C");
+                            tempswap=false;
+                        }
+                    });
+
+                    if(celcius>=25 || FareTemp>=75){
+                        $("#image").attr("src","https://cdn0.iconfinder.com/data/icons/travel-flat-icons/105/sun-512.png")
+                    }else if ((celcius>=10 && celcius<25)||(FareTemp<75 && FareTemp >45)){
+                        $("#image").attr("src","https://www.ocrmobile.com/images/2016/12/21/cloud.png")
+                    }else if(celcius=0 || FareTemp===32){
+                        $("#image").attr("src","https://cdn.iconscout.com/public/images/icon/free/png-512/snow-cold-flake-snowfall-snowflake-weather-388d22cfbc51ea26-512x512.png")
+                    }else{     $("#image").attr("src","https://www.ocrmobile.com/images/2016/12/21/cloud.png")
+                    }
+
+
+                });
+            });
+        }
+
+    });
+
+
+</script>
+</html>
